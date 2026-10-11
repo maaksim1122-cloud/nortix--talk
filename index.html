@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nortix Talk — месенджер для Android з Mesh і Tor</title>
+<meta name="description" content="Nortix Talk — відкритий месенджер для Android: Mesh через Bluetooth і Wi-Fi Direct, вбудований Tor, дзвінки, налаштування приватності та вигляду.">
+<meta property="og:title" content="Nortix Talk — спілкуйтесь приватно і швидко">
+<meta property="og:description" content="Месенджер для Android, який працює і без інтернету: Mesh, Tor, дзвінки.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23101c33'/><text x='50' y='68' font-size='56' text-anchor='middle' fill='%233ef0a8' font-family='Georgia,serif' font-style='italic'>N</text></svg>">
+<style>
+:root{--bg:#050706;--bg2:#0b100e;--card:#111815;--line:#1f2a25;--text:#f1f6f3;--mute:#9aa9a2;--mint:#3ef0a8;--ink:#04140d}
+@media (prefers-color-scheme:light){:root{--bg:#f5f9f7;--bg2:#eaf2ee;--card:#fff;--line:#d7e3dd;--text:#0c1612;--mute:#52635b;--mint:#10a974;--ink:#fff}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:17px/1.6 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;padding-top:env(safe-area-inset-top,0);padding-bottom:env(safe-area-inset-bottom,0)}
+a{color:var(--mint)}.w{max-width:1080px;margin:0 auto;padding:0 22px}
+.serif{font-family:Georgia,"Palatino Linotype",serif;font-style:italic}
+nav{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .w{display:flex;align-items:center;justify-content:space-between;gap:10px;height:64px}
+.logo{font-size:clamp(20px,5vw,26px);font-weight:700;color:var(--mint);text-decoration:none;white-space:nowrap}
+.nb{display:flex;gap:8px}
+.nb a{padding:8px 14px;border-radius:999px;border:1.5px solid var(--mint);color:var(--mint);text-decoration:none;font-size:14.5px;font-weight:600;white-space:nowrap}
+.nb a.f{background:var(--mint);color:var(--ink)}
+@media(max-width:420px){.nb a{padding:7px 10px;font-size:13px}.nb{gap:5px}}
+.hero{text-align:center;padding:72px 22px 40px}
+.pill{display:inline-block;border:1px solid var(--line);background:var(--card);color:var(--mute);font-size:14px;padding:6px 14px;border-radius:999px;margin-bottom:22px}
+h1{font-size:clamp(36px,7.4vw,70px);line-height:1.05;margin:0 auto 22px;max-width:16ch;letter-spacing:-1.5px}
+h1 em{color:var(--mint);font-family:Georgia,serif}
+.h1b{display:block;font-size:.6em;line-height:1.15;letter-spacing:-.8px;margin-top:16px;font-weight:600}
+.lead{font-size:clamp(18px,2.6vw,22px);color:var(--mute);max-width:36em;margin:0 auto 32px}
+.btns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.btn{display:inline-block;padding:15px 28px;border-radius:999px;text-decoration:none;font-weight:600;border:2px solid var(--mint)}
+.btn.m{background:var(--mint);color:var(--ink)}.btn.o{color:var(--mint)}
+.chips{display:flex;flex-wrap:wrap;gap:10px 22px;justify-content:center;margin:34px 0 0;color:var(--mute);font-size:15px;padding:0;list-style:none}
+.chips li:before{content:"✓ ";color:var(--mint)}
+.phones{display:flex;justify-content:center;align-items:flex-start;gap:18px;margin-top:54px}
+.phones img{width:min(250px,42vw);border-radius:30px;border:1px solid var(--line);display:block}
+.phones img:nth-child(2){margin-top:44px}.phones img:nth-child(3){display:none}
+@media(min-width:760px){.phones img:nth-child(3){display:block}}
+section{padding:76px 0;border-top:1px solid var(--line)}section.alt{background:var(--bg2)}
+.h2{font-size:clamp(28px,5vw,42px);line-height:1.12;margin:0 0 12px;letter-spacing:-.5px}
+.sub{color:var(--mute);max-width:36em;margin:0 0 36px}
+.grid{display:grid;gap:16px}@media(min-width:760px){.grid{grid-template-columns:repeat(3,1fr)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px}
+.card .i{font-size:30px;line-height:1;margin-bottom:14px}.card h3{margin:0 0 6px;font-size:19px}
+.card p{margin:0;color:var(--mute);font-size:15.5px}
+.mesh{display:block;width:100%;max-width:760px;height:auto;margin:0 auto}
+.mesh .ph{fill:var(--card);stroke:var(--mint);stroke-width:2}.mesh .sc{fill:var(--bg2);stroke:var(--line)}
+.mesh .bb{fill:var(--line)}.mesh .bm{fill:var(--mint)}
+.mesh .wv{fill:none;stroke:var(--mint);stroke-width:3;stroke-linecap:round;stroke-dasharray:3 9;animation:flow 1.4s linear infinite}
+.mesh .lb{fill:var(--mute);font:600 13px "Segoe UI",system-ui,sans-serif;text-anchor:middle}
+@keyframes flow{to{stroke-dashoffset:-24}}
+@media(prefers-reduced-motion:reduce){.mesh .wv{animation:none}html{scroll-behavior:auto}}
+.row{display:grid;gap:36px;align-items:center}
+@media(min-width:820px){.row{grid-template-columns:1fr 1fr}.row.rev .txt{order:2}}
+.row+.row{margin-top:84px}
+.shots{display:flex;gap:16px;justify-content:center}
+.shots img{width:min(230px,42vw);border-radius:26px;border:1px solid var(--line)}
+.shots img+img{margin-top:36px}
+.row ul{padding:0;margin:18px 0 0;list-style:none;color:var(--mute)}
+.row li{padding:6px 0}.row li:before{content:"→ ";color:var(--mint)}
+.mf{margin:34px auto 0;max-width:620px;display:grid;gap:20px;align-items:center;text-align:left;color:var(--mute)}
+@media(min-width:640px){.mf{grid-template-columns:200px 1fr}}
+.mf img{width:200px;border-radius:24px;border:1px solid var(--line);justify-self:center}
+.dl{display:grid;gap:16px}@media(min-width:820px){.dl{grid-template-columns:repeat(3,1fr)}}
+.dl .card{display:flex;flex-direction:column;gap:12px}.dl .btn{margin-top:auto;text-align:center}
+.qr{width:150px;height:150px;border-radius:14px;background:#fff;padding:8px;align-self:center}
+details{border-bottom:1px solid var(--line);padding:18px 0}
+summary{cursor:pointer;font-weight:600;font-size:18px;list-style:none}summary::-webkit-details-marker{display:none}
+summary:after{content:"+";float:right;color:var(--mint);font-size:24px;line-height:1}
+details[open] summary:after{content:"–"}details p{color:var(--mute);margin:12px 0 0}
+code{font-size:12.5px;word-break:break-all;color:var(--text)}
+footer{padding:40px 0 56px;color:var(--mute);font-size:14.5px;border-top:1px solid var(--line)}
+footer .w{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between}
+:focus-visible{outline:3px solid var(--mint);outline-offset:3px;border-radius:8px}
+</style>
+</head>
+<body>
+
+<nav><div class="w">
+  <a class="logo serif" href="#">Nortix Talk</a>
+  <div class="nb"><a href="#faq">FAQ</a><a href="https://github.com/maaksim1122-cloud/nortix-talk">Код</a><a class="f" href="#download">Завантажити</a></div>
+</div></nav>
+
+<header class="w hero">
+  <span class="pill">Відкритий код · Android 7.0+</span>
+  <h1>Спілкуйтесь <em>приватно і швидко</em><span class="h1b">Спілкуйтесь, коли немає інтернету і світла</span></h1>
+  <p class="lead">Nortix Talk — месенджер для Android із чатами, дзвінками, вбудованим Tor і Mesh-зв'язком без інтернету. Ви самі вирішуєте, хто вас знайде й хто вам подзвонить.</p>
+  <div class="btns"><a class="btn m" href="#download">Завантажити</a><a class="btn o" href="#faq">Часті питання</a></div>
+  <ul class="chips"><li>Tor вбудований</li><li>Mesh: Bluetooth і Wi-Fi Direct</li><li>Код відкритий (GPL-3.0)</li></ul>
+  <div class="phones" aria-hidden="true">
+    <img src="img/look.jpg" alt="" width="270" height="585"><img src="img/call.jpg" alt="" width="270" height="585"><img src="img/colors.jpg" alt="" width="270" height="585">
+  </div>
+</header>
+
+<section id="mesh"><div class="w" style="text-align:center">
+  <h2 class="h2">Зв'язок, коли мережі немає</h2>
+  <p class="sub" style="margin:0 auto 32px">Mesh: телефони передають повідомлення один одному через Bluetooth і Wi-Fi Direct, стрибок за стрибком. Без інтернету й мобільного зв'язку.</p>
+  <svg class="mesh" viewBox="0 0 720 230" role="img" aria-label="Три телефони, з'єднані хвилястими лініями зв'язку">
+    <g><rect class="ph" x="40" y="30" width="80" height="160" rx="14"/><rect class="sc" x="48" y="48" width="64" height="124" rx="6"/><rect class="bb" x="54" y="62" width="34" height="14" rx="7"/><rect class="bm" x="72" y="84" width="34" height="14" rx="7"/><rect class="bb" x="54" y="106" width="28" height="14" rx="7"/></g>
+    <g><rect class="ph" x="320" y="30" width="80" height="160" rx="14"/><rect class="sc" x="328" y="48" width="64" height="124" rx="6"/><rect class="bm" x="352" y="62" width="34" height="14" rx="7"/><rect class="bb" x="334" y="84" width="34" height="14" rx="7"/><rect class="bm" x="358" y="106" width="28" height="14" rx="7"/></g>
+    <g><rect class="ph" x="600" y="30" width="80" height="160" rx="14"/><rect class="sc" x="608" y="48" width="64" height="124" rx="6"/><rect class="bb" x="614" y="62" width="34" height="14" rx="7"/><rect class="bm" x="632" y="84" width="34" height="14" rx="7"/><rect class="bb" x="614" y="106" width="28" height="14" rx="7"/></g>
+    <path class="wv" d="M130 110 q22.5 -34 45 0 t45 0 t45 0 t45 0"/><path class="wv" d="M410 110 q22.5 -34 45 0 t45 0 t45 0 t45 0"/>
+    <text class="lb" x="220" y="168">Bluetooth</text><text class="lb" x="500" y="168">Wi-Fi Direct</text>
+  </svg>
+  <div class="mf"><img src="img/mesh.jpg" alt="Налаштування Mesh" loading="lazy" width="200" height="433"><p>Спершу спаруйте телефони в налаштуваннях Bluetooth, виберіть їх як Mesh-партнерів, потім увімкніть Mesh. Зробіть це на кожному телефоні.</p></div>
+</div></section>
+
+<section id="features" class="alt"><div class="w">
+  <h2 class="h2">Усе потрібне, в одному застосунку</h2>
+  <p class="sub">Відкрили, знайшли людину, написали чи подзвонили.</p>
+  <div class="grid">
+    <div class="card"><div class="i">💬</div><h3>Чати та медіа</h3><p>Текст, до 10 фото за раз, відео з обрізанням, групи, канали та історії.</p></div>
+    <div class="card"><div class="i">📞</div><h3>Голосові та відеодзвінки</h3><p>Дзвінки з перемиканням камери та динаміка. Звук лишається наскрізно зашифрованим.</p></div>
+    <div class="card"><div class="i">🧅</div><h3>Tor усередині</h3><p>Tor вбудований, окремий Orbot не потрібен. Вмикається й автоматично, коли сервер у вашій мережі заблоковано.</p></div>
+    <div class="card"><div class="i">📡</div><h3>Mesh</h3><p>Повідомлення йдуть від телефона до телефона через Bluetooth і Wi-Fi Direct.</p></div>
+    <div class="card"><div class="i">🔒</div><h3>Приватність</h3><p>Код-пароль, клавіатура-інкогніто, вимкнений час «був(ла) в мережі» та стирання даних одним кроком.</p></div>
+    <div class="card"><div class="i">🎨</div><h3>Ваш вигляд</h3><p>Кольори, шпалери, розмір шрифту й кнопок, заокруглення бульбашок.</p></div>
+  </div>
+</div></section>
+
+<section id="privacy"><div class="w">
+  <div class="row">
+    <div class="txt">
+      <h2 class="h2">Приватність під вашим контролем</h2>
+      <p class="sub" style="margin:0">Налаштуйте, хто вас бачить і з ким ви на зв'язку.</p>
+      <ul><li>Хто знайде вас за ID: можна лише спарені контакти, тоді вас немає в пошуку</li><li>Хто може вам телефонувати</li><li>«Лише через ретранслятор» ховає вашу IP-адресу від співрозмовника (потрібен TURN-сервер)</li><li>Tor: вбудований у застосунок</li></ul>
+    </div>
+    <div class="shots"><img src="img/privacy.jpg" alt="Налаштування конфіденційності" loading="lazy" width="230" height="498"><img src="img/tor.jpg" alt="Налаштування з'єднання та Tor" loading="lazy" width="230" height="498"></div>
+  </div>
+  <div class="row rev">
+    <div class="txt">
+      <h2 class="h2">Додайте людину за секунди</h2>
+      <p class="sub" style="margin:0">Свій QR, сканування чужого, посилання чи пошук за ID.</p>
+      <ul><li>QR із камери або з галереї</li><li>Додати чи приєднатися за посиланням</li><li>Публічні групи та канали</li></ul>
+    </div>
+    <div class="shots"><img src="img/menu.jpg" alt="Меню додавання контактів, груп і каналів" loading="lazy" width="230" height="235"><img src="img/call.jpg" alt="Екран дзвінка" loading="lazy" width="230" height="498"></div>
+  </div>
+</div></section>
+
+<section id="look" class="alt"><div class="w">
+  <div class="row">
+    <div class="txt">
+      <h2 class="h2">Зробіть його своїм</h2>
+      <p class="sub" style="margin:0">Від кольору застосунку до заокруглення бульбашок.</p>
+      <ul><li>Власні кольори для вхідних і вихідних повідомлень</li><li>Шпалери чату й затемнення картинки</li><li>Розмір шрифту й кнопок під ваш зір і палець</li></ul>
+    </div>
+    <div class="shots"><img src="img/look.jpg" alt="Екран «Зовнішній вигляд»" loading="lazy" width="230" height="498"><img src="img/colors.jpg" alt="Кольори та шпалери" loading="lazy" width="230" height="498"></div>
+  </div>
+</div></section>
+
+<section id="download"><div class="w">
+  <h2 class="h2">Завантажити</h2>
+  <p class="sub">Оберіть, як вам зручніше отримувати застосунок і оновлення.</p>
+  <div class="dl">
+    <div class="card"><h3>APK</h3><p>Файл для ручного встановлення. Потрібен Android 7.0 або новіший.</p><a class="btn m" href="https://github.com/maaksim1122-cloud/nortix-talk/releases">GitHub Releases</a></div>
+    <div class="card"><h3>F-Droid</h3><p>Додайте наш репозиторій і отримуйте оновлення автоматично: Налаштування → Репозиторії → «+».</p>
+      <img class="qr" src="img/fdroid-qr.png" alt="QR-код репозиторію F-Droid" loading="lazy" width="150" height="150">
+      <a class="btn o" href="fdroidrepos://maksnortix.world/repo?fingerprint=B1EC3F7119BA104D9A303318591279EAD1E817FCE35F92BB5E597AABA13E0A74">Додати в F-Droid</a></div>
+    <div class="card"><h3>З коду</h3><p>Відкрийте проєкт в Android Studio або зберіть із терміналу.</p><code style="display:block;background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:12px">./gradlew assembleRelease</code><a class="btn o" href="https://github.com/maaksim1122-cloud/nortix-talk">Відкрити на GitHub</a></div>
+  </div>
+</div></section>
+
+<section id="faq" class="alt"><div class="w">
+  <h2 class="h2">FAQ</h2>
+  <details><summary>Як додати контакт?</summary><p>Покажіть свій QR або відскануйте чужий (з камери чи з галереї), відкрийте посилання або знайдіть людину за ID, якщо вона це дозволила в налаштуваннях приватності.</p></details>
+  <details><summary>Чи потрібен номер телефону?</summary><p>Ні, для користування застосунком номер телефону не потрібен.</p></details>
+  <details><summary>Як працює Mesh без інтернету?</summary><p>Телефони передають повідомлення один одному через Bluetooth і Wi-Fi Direct, стрибок за стрибком. Спершу спаруйте телефони, виберіть їх як Mesh-партнерів і ввімкніть Mesh на кожному з них.</p></details>
+  <details><summary>Чи видає дзвінок мою IP-адресу?</summary><p>Для з'єднання використовується STUN/TURN-сервер, тож він бачить вашу IP-адресу. Співрозмовник теж може її побачити, якщо не ввімкнено «Лише через ретранслятор». Звук лишається наскрізно зашифрованим.</p></details>
+  <details><summary>Наскільки це анонімно?</summary><p>Tor вбудований у застосунок і допомагає приховати вашу IP-адресу. Але ми не обіцяємо абсолютної анонімності: застосунок не проходив незалежного аудиту безпеки, тому не покладайтеся на нього там, де від цього залежить ваша безпека.</p></details>
+  <details><summary>Чи можна користуватися акаунтом на двох телефонах?</summary><p>Ні, акаунт активний лише на одному пристрої. Щоб змінити телефон, збережіть зашифрований файл акаунта й імпортуйте його на новому. Фото, голосові та відео не переносяться.</p></details>
+  <details><summary>Як отримувати оновлення й перевірити репозиторій?</summary><p>Додайте репозиторій у F-Droid. Відбиток ключа (SHA-256): <code>B1EC3F7119BA104D9A303318591279EAD1E817FCE35F92BB5E597AABA13E0A74</code></p></details>
+  <details><summary>Куди повідомити про помилку?</summary><p>У розділі <a href="https://github.com/maaksim1122-cloud/nortix-talk/issues">Issues на GitHub</a>.</p></details>
+</div></section>
+
+<footer><div class="w">
+  <span>© 2026 Nortix Talk</span>
+  <span><a href="https://github.com/maaksim1122-cloud/nortix-talk">GitHub</a> · <a href="https://github.com/maaksim1122-cloud/nortix-talk/issues">Повідомити про помилку</a></span>
+</div></footer>
+</body>
+</html>
